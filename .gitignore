@@ -1,0 +1,24 @@
+# Chaves e segredos — este repositório é público.
+config/api_keys.json
+config/certs/*.key
+config/certs/*.crt
+
+# Memória: contém conversas e dados pessoais.
+memory/long_term.json
+memory/*.json
+
+# Backups do instalador do kit JARVIS.
+*.bak-jarvis
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
