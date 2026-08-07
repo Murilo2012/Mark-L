@@ -1750,6 +1750,19 @@ class MainWindow(QMainWindow):
         if _ui_color and _ui_color.lower() != DEFAULT_UI_COLOR:
             apply_ui_accent(_ui_color)
 
+        # Os realces (ACC/ACC2) ficam fora da derivação de matiz de propósito,
+        # para que estados continuem legíveis em qualquer tema. Mas um tema pode
+        # querer o próprio par — o dourado que acompanha o vermelho do Homem de
+        # Ferro — e então o declara no config.
+        for _chave, _attr in (("ui_accent", "ACC"), ("ui_accent2", "ACC2")):
+            _hex = (_cfg.get(_chave) or "").strip()
+            if len(_hex) == 7 and _hex.startswith("#"):
+                try:
+                    int(_hex[1:], 16)
+                except ValueError:
+                    continue
+                setattr(C, _attr, _hex)
+
         self.setWindowTitle(f"{_display} — MARK XLIX")
         self.setMinimumSize(_MIN_W, _MIN_H)
         self.resize(_DEFAULT_W, _DEFAULT_H)
