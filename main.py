@@ -15,6 +15,18 @@ if _platform.system() == "Windows":
     _subprocess.Popen = _Popen
 # ─────────────────────────────────────────────────────────────────────────────
 
+# ── Silencia avisos de bibliotecas de terceiros ──────────────────────────────
+# O sounddevice dispara um DeprecationWarning do NumPy 2.5 a cada bloco de áudio
+# capturado — centenas de linhas por minuto, que enterram os erros que importam.
+# O duckduckgo_search avisa sobre a própria renomeação a cada busca. Nenhum dos
+# dois é acionável daqui: são chamadas internas de pacotes de terceiros. Erros
+# de verdade continuam aparecendo normalmente.
+import warnings as _warnings
+
+_warnings.filterwarnings("ignore", category=DeprecationWarning, module="sounddevice")
+_warnings.filterwarnings("ignore", message=r".*renamed to `ddgs`.*")
+# ─────────────────────────────────────────────────────────────────────────────
+
 import asyncio
 import re
 import threading
@@ -58,6 +70,7 @@ from actions.background_monitor import (
 )
 from actions.web_search        import _news as _fetch_news_sync
 from memory.config_manager     import get_brief_enabled
+from actions.gemini_model import flash as _gm_flash, flash_lite as _gm_lite
 
 
 def get_base_dir():
@@ -1236,7 +1249,7 @@ class JarvisLive:
             client = _genai.Client(api_key=_get_api_key())
             resp   = await asyncio.to_thread(
                 client.models.generate_content,
-                model="gemini-2.5-flash",
+                model=_gm_flash(),
                 contents=prompt,
             )
             summary = (resp.text or "").strip()

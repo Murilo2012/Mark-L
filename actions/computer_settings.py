@@ -6,6 +6,7 @@ import time
 import subprocess
 import platform
 from pathlib import Path
+from actions.gemini_model import flash as _gm_flash, flash_lite as _gm_lite
 
 try:
     import pyautogui
@@ -613,7 +614,7 @@ Rules:
 - Return ONLY the JSON, no explanation, no markdown."""
 
     try:
-        resp = _client.models.generate_content(model="gemini-2.5-flash-lite", contents=prompt)
+        resp = _client.models.generate_content(model=_gm_lite(), contents=prompt)
         text = re.sub(r"```(?:json)?", "", resp.text).strip().rstrip("`").strip()
         return json.loads(text)
     except Exception as e:

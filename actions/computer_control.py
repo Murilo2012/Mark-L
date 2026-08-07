@@ -14,6 +14,7 @@ else:
 import time
 import random
 from pathlib import Path
+from actions.gemini_model import flash as _gm_flash, flash_lite as _gm_lite
 
 try:
     import pyautogui
@@ -336,7 +337,7 @@ def _screen_find(description: str) -> tuple[int, int] | None:
         )
 
         response = client.models.generate_content(
-            model="gemini-2.5-flash-lite",
+            model=_gm_lite(),
             contents=[
                 gtypes.Part.from_bytes(data=image_bytes, mime_type="image/png"),
                 prompt,

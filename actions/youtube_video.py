@@ -34,6 +34,7 @@ except ImportError:
     _TRANSCRIPT_OK = False
 
 from config import get_os, is_windows, is_mac, is_linux
+from actions.gemini_model import flash as _gm_flash, flash_lite as _gm_lite
 
 
 def _get_base_dir() -> Path:
@@ -174,7 +175,7 @@ def _summarize_with_gemini(transcript: str, video_url: str) -> str:
     max_chars = 80000
     truncated = transcript[:max_chars] + ("..." if len(transcript) > max_chars else "")
     response  = _client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=_gm_flash(),
         contents=f"Please summarize this YouTube video transcript:\n\n{truncated}",
         config=types.GenerateContentConfig(
             system_instruction=(

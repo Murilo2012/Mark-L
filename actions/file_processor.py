@@ -24,6 +24,7 @@ import subprocess
 import tempfile
 from pathlib import Path
 from datetime import datetime
+from actions.gemini_model import flash as _gm_flash, flash_lite as _gm_lite
 
 def _get_api_key() -> str:
     config_path = Path(__file__).resolve().parent.parent / "config" / "api_keys.json"
@@ -37,7 +38,7 @@ def _gemini_client():
 
     class _W:
         def generate_content(self, contents):
-            return _c.models.generate_content(model="gemini-2.5-flash", contents=contents)
+            return _c.models.generate_content(model=_gm_flash(), contents=contents)
 
     return _W()
 

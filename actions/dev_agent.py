@@ -4,6 +4,7 @@ import json
 import re
 import time
 from pathlib import Path
+from actions.gemini_model import flash as _gm_flash, flash_lite as _gm_lite
 
 
 def get_base_dir():
@@ -16,8 +17,8 @@ BASE_DIR         = get_base_dir()
 API_CONFIG_PATH  = BASE_DIR / "config" / "api_keys.json"
 PROJECTS_DIR     = Path.home() / "Desktop" / "JarvisProjects"
 MAX_FIX_ATTEMPTS = 5
-MODEL_PLANNER    = "gemini-2.5-flash"
-MODEL_WRITER     = "gemini-2.5-flash"
+MODEL_PLANNER    = _gm_flash()
+MODEL_WRITER     = _gm_flash()
 
 def _get_api_key() -> str:
     with open(API_CONFIG_PATH, "r", encoding="utf-8") as f:

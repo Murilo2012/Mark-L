@@ -2,6 +2,7 @@
 import json
 import sys
 from pathlib import Path
+from actions.gemini_model import flash as _gm_flash, flash_lite as _gm_lite
 
 def _get_base_dir() -> Path:
     if getattr(sys, "frozen", False):
@@ -23,7 +24,7 @@ def _gemini_search(query: str) -> str:
 
     client   = genai.Client(api_key=_get_api_key())
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=_gm_flash(),
         contents=query,
         config={"tools": [{"google_search": {}}]},
     )
@@ -124,7 +125,7 @@ def _gemini_headlines(n: int = 5) -> tuple[list[str], str]:
 
     client = genai.Client(api_key=_get_api_key())
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=_gm_flash(),
         contents=f"Current world news: {n} headlines. Numbered list, titles only.",
         config={"tools": [{"google_search": {}}]},
     )
