@@ -23,15 +23,17 @@ def _get_api_key() -> str:
         return json.load(f)["gemini_api_key"]
 
 
-def _get_gemini(model: str = GEMINI_MODEL):
-    from google import genai
-    _c = genai.Client(api_key=_get_api_key())
+def _get_gemini(model_name: str = ""):
+    """Motor de programação: Claude Code (instalado pelo kit JARVIS)."""
+    import sys as _sys
+    from pathlib import Path as _Path
 
-    class _W:
-        def generate_content(self, contents):
-            return _c.models.generate_content(model=model, contents=contents)
+    _raiz = str(_Path(__file__).resolve().parent.parent)
+    if _raiz not in _sys.path:
+        _sys.path.insert(0, _raiz)
 
-    return _W()
+    from claude_backend import get_model
+    return get_model(model_name)
 
 
 def _clean_code(text: str) -> str:
